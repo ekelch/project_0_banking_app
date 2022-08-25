@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Refer to logback documentation for proper tags and attributes -->
+<configuration>
+	<appender name="STDOUT"
+	class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<file>jdbclogs.log</file>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="consoleLogger" level="debug">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+	
+	<logger name="fileLogger" level="debug">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+	
+</configuration>
