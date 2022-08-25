@@ -16,8 +16,6 @@ public class UserDao implements UserDaoInterface{
 	
 	Logger consoleLogger;
 	Logger fileLogger;
-	
-	
 
 	public UserDao() {
 		this.consoleLogger = LoggerFactory.getLogger("consoleLogger");
@@ -32,8 +30,6 @@ public class UserDao implements UserDaoInterface{
 
 	@Override
 	public User getUser(String username, String password) {
-		
-		consoleLogger.debug("Getting username with username and password");
 		
 		User user = null;
 		

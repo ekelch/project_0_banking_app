@@ -1,18 +1,19 @@
 package com.revature.controller;
 
 import java.util.Scanner;
-import com.revature.services.LoginService;
+
+import com.revature.repository.UserDaoInterface;
 import com.revature.services.models.User;
 
 public class UserController implements UserInputInterface, LoginInterface{
 
 	private Scanner sc;
-	private LoginService loginService;
+	private UserDaoInterface userDao;
 	
-	public UserController(Scanner sc, LoginService loginService) {
+	public UserController(Scanner sc, UserDaoInterface userDao) {
 		super();
 		this.sc = sc;
-		this.loginService = loginService;
+		this.userDao = userDao;
 	}
 
 	@Override
@@ -33,18 +34,19 @@ public class UserController implements UserInputInterface, LoginInterface{
 	
 	@Override
 	public String getUserInput(String input) {
-		System.out.println("Please enter your " + input + ": ");
+		System.out.print("Please enter your " + input + ": ");
 		return sc.nextLine();
 	}
 	
 	@Override
 	public User validateLogin(String username, String password) {
 		
-		if (username == null && password == null) {
+		User user = userDao.getUser(username, password);
+		if (user.getUsername().equals(username) && user.getPassword().equals(password))
+			return user;
+		else
 			return null;
-		}
-		User user = loginService.login(username, password);
-		return user;
+		
 	}
 
 }
