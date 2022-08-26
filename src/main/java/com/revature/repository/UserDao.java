@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,9 @@ public class UserDao implements UserDaoInterface{
 
 	@Override
 	public User createUser(User newUser) {
-		// TODO Auto-generated method stub
+
+		
+		
 		return null;
 	}
 
@@ -43,6 +47,8 @@ public class UserDao implements UserDaoInterface{
 				user = new Customer(
 						set.getString("username"),
 						set.getString("password"),
+						set.getString("first_name"),
+						set.getString("last_name"),
 						set.getString("email")
 						);
 			}
@@ -53,6 +59,28 @@ public class UserDao implements UserDaoInterface{
 		}
 		
 		return user;
+	}
+	
+	public List<String> getAllUsernames() {
+		List<String> userList = new ArrayList<String>();
+		
+		final String sql = "SELECT username FROM users";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			while (set.next()) {
+				userList.add(set.getString("username"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			consoleLogger.error(e.getMessage());
+		}
+		
+		//consoleLogger.debug("Getting userList from users(username)");
+		return userList;
 	}
 
 	@Override

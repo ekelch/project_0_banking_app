@@ -1,5 +1,7 @@
 package com.revature.repository;
 
+import java.util.List;
+
 import com.revature.services.models.User;
 
 public interface UserDaoInterface {
@@ -9,6 +11,7 @@ public interface UserDaoInterface {
 	
 	//READ
 	User getUser(String username, String password);
+	List<String> getAllUsernames();
 	
 	//UPDATE
 	User updateUser(User newUser);

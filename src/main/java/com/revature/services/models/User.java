@@ -8,14 +8,25 @@ public abstract class User {
 	
 	protected String password;
 	
+	protected String FirstName;
+	
+	protected String LastName;
+	
 	protected String email;
 
-	
-	public User(String username, String password, String email) {
+	public User(String username, String password, String firstName, String lastName, String email) {
 		super();
 		this.username = username;
 		this.password = password;
+		FirstName = firstName;
+		LastName = lastName;
 		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", FirstName=" + FirstName + ", LastName="
+				+ LastName + ", email=" + email + "]";
 	}
 
 	public String getUsername() {
@@ -34,6 +45,22 @@ public abstract class User {
 		this.password = password;
 	}
 
+	public String getFirstName() {
+		return FirstName;
+	}
+
+	public void setFirstName(String firstName) {
+		FirstName = firstName;
+	}
+
+	public String getLastName() {
+		return LastName;
+	}
+
+	public void setLastName(String lastName) {
+		LastName = lastName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -43,13 +70,8 @@ public abstract class User {
 	}
 
 	@Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + "]";
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(email, password, username);
+		return Objects.hash(FirstName, LastName, email, password, username);
 	}
 
 	@Override
@@ -61,9 +83,11 @@ public abstract class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(email, other.email) && Objects.equals(password, other.password)
+		return Objects.equals(FirstName, other.FirstName) && Objects.equals(LastName, other.LastName)
+				&& Objects.equals(email, other.email) && Objects.equals(password, other.password)
 				&& Objects.equals(username, other.username);
 	}
+
 	
 	
 	
