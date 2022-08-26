@@ -25,7 +25,7 @@ public class UserController implements UserInputInterface, LoginInterface{
 		User user = validateLogin(username, password);
 		if (user != null) {
 			System.out.println("Login Successful!");
-			System.out.println(user);
+			System.out.println("Welcome, " + username +".");
 		} else {
 			System.out.println("Failed Login!");
 		}
