@@ -11,7 +11,8 @@ public interface UserDaoInterface {
 	
 	//READ
 	User getUser(String username, String password);
-	List<String> getAllUsernames();
+	
+	List<String> getAllInput(String input);
 	
 	//UPDATE
 	User updateUser(User newUser);

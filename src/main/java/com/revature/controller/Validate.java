@@ -4,36 +4,55 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.revature.repository.UserDaoInterface;
+import com.revature.services.models.User;
 
-public class Validate extends UserController{
+public class Validate{
 	
+	private Scanner sc;
+	private UserDaoInterface userDao;
+
 	public Validate(Scanner sc, UserDaoInterface userDao) {
-		super(sc, userDao);
-		// TODO Auto-generated constructor stub
+		this.sc = sc;
+		this.userDao = userDao;
 	}
 
-	private String validateNewUsername() {
-		String newUsername = null;
-		Boolean validUsername = false;
-		List<String> userList = userDao.getAllUsernames();
+	public String validateUnique(String input) {
+		String newInput = null;
+		Boolean validInput = false;
+		List<String> inputList = userDao.getAllInput(input);
 		
 		System.out.print("Please choose your username: ");
 		
-		while (!validUsername) {
+		while (!validInput) {
 		
-			newUsername = sc.nextLine();
+			newInput = sc.nextLine();
 			
-			if (newUsername.isBlank() || newUsername.equals(null)) {
-				System.out.println("Please type a username including at least one character.");
+			if (newInput.isBlank() || newInput.equals(null)) {
+				System.out.println("Please type a " + input + " including at least one character.");
 				continue;
 			}
-			if (userList.contains(newUsername)) {
-				System.out.println("Sorry, this username is unavailable. Please try again.");
+			if (inputList.contains(newInput)) {
+				System.out.println("Sorry, this " + input + " is unavailable. Please try again.");
 				continue;
 			}
-			validUsername = true;
+			validInput = true;
 		}
-		return newUsername;
+		return newInput;
 	}
+	
+	public String getValidateNotNull(String input) {
+		System.out.print("Please enter your " + input + ": ");
+		return sc.nextLine();
+	}
+	
+	public User validateLogin(String username, String password) {
+			User user = userDao.getUser(username, password);
+			if (user == null) 
+				return null;
+			else if (user.getUsername().equals(username) && user.getPassword().equals(password))
+				return user;
+			else
+				return null;
+		}
 
 }

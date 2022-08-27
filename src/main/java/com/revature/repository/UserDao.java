@@ -61,17 +61,17 @@ public class UserDao implements UserDaoInterface{
 		return user;
 	}
 	
-	public List<String> getAllUsernames() {
-		List<String> userList = new ArrayList<String>();
+	public List<String> getAllInput(String input) {
+		List<String> inputList = new ArrayList<String>();
 		
-		final String sql = "SELECT username FROM users";
+		final String sql = "SELECT " + input + " FROM users";
 		
 		try (	Connection connection = ConnectionFactory.getConnection();
 				Statement statement = connection.createStatement();) 
 		{
 			ResultSet set = statement.executeQuery(sql);
 			while (set.next()) {
-				userList.add(set.getString("username"));
+				inputList.add(set.getString(input));
 			}
 			
 		} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class UserDao implements UserDaoInterface{
 		}
 		
 		//consoleLogger.debug("Getting userList from users(username)");
-		return userList;
+		return inputList;
 	}
 
 	@Override
