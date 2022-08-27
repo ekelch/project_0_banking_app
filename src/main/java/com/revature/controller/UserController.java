@@ -9,8 +9,8 @@ import com.revature.services.models.User;
 
 public class UserController implements UserInputInterface, LoginInterface{
 
-	private Scanner sc;
-	private UserDaoInterface userDao;
+	protected Scanner sc;
+	protected UserDaoInterface userDao;
 	
 	public UserController(Scanner sc, UserDaoInterface userDao) {
 		super();
