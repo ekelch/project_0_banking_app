@@ -18,7 +18,7 @@ public class Driver {
 		UserController userController = new UserController(sc, uDao);
 		
 		Menu menu = new Menu(userController);
-		menu.enterMenu();
+		menu.mainMenu();
 	}
 
 }

@@ -20,19 +20,18 @@ public class UserController implements LoginInterface{
 	}
 
 	@Override
-	public boolean login() {
+	public User login() {
 		System.out.println("Please login by typing your username and password.");
 		String username = validate.getValidateNotNull("username");
 		String password = validate.getValidateNotNull("password");
 		System.out.println("Attempting to log you in...");
 		User user = validate.validateLogin(username, password);
 		if (user != null) {
-			System.out.println("Login Successful!");
-			System.out.println("Welcome, " + username +".");
+			System.out.println("Login Successful! Welcome, " + username + ".");
 		} else {
 			System.out.println("Failed Login!");
 		}
-		return user!=null;
+		return user;
 	}
 	
 	public void createUser() {
@@ -42,12 +41,18 @@ public class UserController implements LoginInterface{
 		String newLastName= validate.getValidateNotNull("LastName");
 		String newEmail = validate.validateUnique("Email");
 		User newUser = new Customer(newUsername, newPassword, newFirstName, newLastName, newEmail);
-		System.out.println(newUser);
+		userDao.createUser(newUser);
+		System.out.println("User successfully created! \nReturning you to main menu.");
 	}
 	
 
 	public Scanner getSc() {
 		return sc;
+	}
+
+	public void apply() {
+		
+		
 	}
 
 }

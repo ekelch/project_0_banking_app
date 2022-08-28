@@ -21,7 +21,7 @@ public class Validate{
 		Boolean validInput = false;
 		List<String> inputList = userDao.getAllInput(input);
 		
-		System.out.print("Please choose your username: ");
+		System.out.print("Please choose your " + input +":");
 		
 		while (!validInput) {
 		
@@ -41,8 +41,12 @@ public class Validate{
 	}
 	
 	public String getValidateNotNull(String input) {
-		System.out.print("Please enter your " + input + ": ");
-		return sc.nextLine();
+		String returnable = null;
+		while (returnable == null || returnable.isBlank()) {
+			System.out.print("Please enter your " + input + ": ");
+			returnable = sc.nextLine();
+		}
+		return returnable;
 	}
 	
 	public User validateLogin(String username, String password) {

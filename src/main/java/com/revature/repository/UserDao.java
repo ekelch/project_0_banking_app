@@ -22,14 +22,26 @@ public class UserDao implements UserDaoInterface{
 	public UserDao() {
 		this.consoleLogger = LoggerFactory.getLogger("consoleLogger");
 		this.fileLogger = LoggerFactory.getLogger("fileLogger");
-	}
+
+}
 
 	@Override
-	public User createUser(User newUser) {
-
+	public void createUser(User newUser) {
+		// Default access type 1 = customer; May be elevated by admin later
+		final String sql = "INSERT INTO users (username, password, access_type, first_name, last_name, email) "
+				+ "VALUES ('" + newUser.getUsername() + "', '" + newUser.getPassword() + "', 1, '" + newUser.getFirstName() + "', '" + newUser.getLastName() + "', '" + newUser.getEmail() + "');";
 		
+		try (Connection connection = ConnectionFactory.getConnection();
+			 Statement statement = connection.createStatement();)
+		{
+			statement.executeQuery(sql);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+			
+		}
 		
-		return null;
 	}
 
 	@Override
@@ -57,10 +69,10 @@ public class UserDao implements UserDaoInterface{
 			// TODO Auto-generated catch block
 			consoleLogger.error(e.getMessage());
 		}
-		
 		return user;
 	}
 	
+	// Retrieve full array list of any column from users table
 	public List<String> getAllInput(String input) {
 		List<String> inputList = new ArrayList<String>();
 		
