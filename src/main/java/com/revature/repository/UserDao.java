@@ -62,9 +62,73 @@ public class UserDao implements UserDaoInterface{
 						set.getInt("user_id"),
 						set.getString("username"),
 						set.getString("password"),
+						set.getInt("access_type"),
 						set.getString("first_name"),
 						set.getString("last_name"),
-						set.getString("email")
+						set.getString("email"),
+						set.getString("status")
+						);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			consoleLogger.error(e.getMessage());
+		}
+		return user;
+	}
+	
+	@Override
+	public User getUserById(int userId) {
+		
+		User user = null;
+		
+		final String sql = "SELECT * FROM users WHERE user_id = " + userId + ";";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				user = new Customer(
+						set.getInt("user_id"),
+						set.getString("username"),
+						set.getString("password"),
+						set.getInt("access_type"),
+						set.getString("first_name"),
+						set.getString("last_name"),
+						set.getString("email"),
+						set.getString("status")
+						);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			consoleLogger.error(e.getMessage());
+		}
+		return user;
+	}
+	
+	@Override
+	public User getUserByUsername(String username) {
+		
+		User user = null;
+		
+		final String sql = "SELECT * FROM users WHERE username = '" + username + "';";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				user = new Customer(
+						set.getInt("user_id"),
+						set.getString("username"),
+						set.getString("password"),
+						set.getInt("access_type"),
+						set.getString("first_name"),
+						set.getString("last_name"),
+						set.getString("email"),
+						set.getString("status")
 						);
 			}
 			
@@ -76,7 +140,7 @@ public class UserDao implements UserDaoInterface{
 	}
 	
 	// Retrieve full array list of any column from users table
-	public List<String> getAllInput(String input) {
+	public List<String> getUsersColumn(String input) {
 		List<String> inputList = new ArrayList<String>();
 		
 		final String sql = "SELECT " + input + " FROM users";
@@ -99,10 +163,29 @@ public class UserDao implements UserDaoInterface{
 	}
 
 	@Override
-	public User updateUser(User newUser) {
+	public User setPending(User user) {
+		
+	final String sql = "update users set status = 'pending' where user_id =" + user.getUserId() + ";";
+			
+			try (	Connection connection = ConnectionFactory.getConnection();
+					Statement statement = connection.createStatement();) 
+			{
+				statement.executeQuery(sql);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.getMessage();
+			}
+		user = getUser(user.getUsername(), user.getPassword());
+		return user;
+	}
+
+	@Override
+	public User setAccess(User user, int accessLevel) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	@Override
 	public boolean deleteUser(User user) {

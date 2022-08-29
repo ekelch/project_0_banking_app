@@ -11,15 +11,22 @@ public interface UserDaoInterface {
 	
 	//READ
 	User getUser(String username, String password);
+	User getUserById(int userId);
+	User getUserByUsername(String username);
 	
-	List<String> getAllInput(String input);
+	List<String> getUsersColumn(String input);
 	
 	//UPDATE
-	User updateUser(User newUser);
+	User setPending(User user);
+	User setAccess(User user, int accessLevel);
 	
 	//DELETE 
 	boolean deleteUser(User user);
 
+	
+	
+	
+	
 	static User get(String username, String password) {
 		// TODO Auto-generated method stub
 		return null;

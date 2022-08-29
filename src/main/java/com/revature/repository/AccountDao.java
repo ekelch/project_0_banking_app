@@ -43,6 +43,54 @@ public class AccountDao implements AccountDaoInterface{
 				}
 			return account;
 		}
+	
+	@Override
+	public Account getAccountByUserId(int userId) {
+		Account account = null;
+				
+				final String sql = "SELECT * FROM account_info WHERE user_id = " + userId + ";";
+				
+				try (	Connection connection = ConnectionFactory.getConnection();
+						Statement statement = connection.createStatement();) 
+				{
+					ResultSet set = statement.executeQuery(sql);
+					
+					if (set.next()) {
+						int accountInt = set.getInt("account_id");
+						BigDecimal accountDec = set.getBigDecimal("balance");
+						account = new Account(accountInt, accountDec);
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.getMessage();
+				}
+			return account;
+		}
+	
+	@Override
+	public BigDecimal getBalance(int accountId) {
+		BigDecimal balance = null;
+		
+		final String sql = "SELECT * FROM account_info WHERE account_id = " + accountId + ";";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			
+			if (set.next()) {
+				balance = set.getBigDecimal("balance");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	return balance;
+	}
+	
+	
 
 	@Override
 	public Account updateAccount(int accountId) {
@@ -55,5 +103,7 @@ public class AccountDao implements AccountDaoInterface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 }

@@ -41,7 +41,7 @@ public class UserController implements LoginInterface{
 		String newFirstName = validate.getValidateNotNull("FirstName");
 		String newLastName= validate.getValidateNotNull("LastName");
 		String newEmail = validate.validateUnique("Email");
-		User newUser = new Customer(userId, newUsername, newPassword, newFirstName, newLastName, newEmail);
+		User newUser = new Customer(userId, newUsername, newPassword, 1, newFirstName, newLastName, newEmail, "default");
 		newUser = userDao.createUser(newUser);
 		System.out.println("User successfully created! Returning you to main menu.");
 	}
@@ -49,11 +49,6 @@ public class UserController implements LoginInterface{
 
 	public Scanner getSc() {
 		return sc;
-	}
-
-	public void apply() {
-		
-		
 	}
 
 }

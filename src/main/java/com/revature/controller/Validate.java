@@ -19,7 +19,7 @@ public class Validate{
 	public String validateUnique(String input) {
 		String newInput = null;
 		Boolean validInput = false;
-		List<String> inputList = userDao.getAllInput(input);
+		List<String> inputList = userDao.getUsersColumn(input);
 		
 		System.out.print("Please choose your " + input +":");
 		

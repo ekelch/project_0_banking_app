@@ -10,28 +10,58 @@ public abstract class User {
 	
 	protected String password;
 	
+	protected int AccessType;
+	
 	protected String FirstName;
 	
 	protected String LastName;
 	
 	protected String email;
+	
+	protected String status;
 
-	public User(int userId, String username, String password, String firstName, String lastName, String email) {
+	
+
+	
+
+	public User(int userId, String username, String password, int accessType, String firstName, String lastName,
+			String email, String status) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
+		AccessType = accessType;
 		FirstName = firstName;
 		LastName = lastName;
 		this.email = email;
+		this.status = status;
 	}
 
-	
+
+
+	public int getAccessType() {
+		return AccessType;
+	}
+
+
+	public void setAccessType(int accessType) {
+		AccessType = accessType;
+	}
+
 
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", FirstName="
 				+ FirstName + ", LastName=" + LastName + ", email=" + email + "]";
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 
