@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public abstract class User {
 
+	protected int userId;
+	
 	protected String username;
 	
 	protected String password;
@@ -14,8 +16,9 @@ public abstract class User {
 	
 	protected String email;
 
-	public User(String username, String password, String firstName, String lastName, String email) {
+	public User(int userId, String username, String password, String firstName, String lastName, String email) {
 		super();
+		this.userId = userId;
 		this.username = username;
 		this.password = password;
 		FirstName = firstName;
@@ -23,10 +26,22 @@ public abstract class User {
 		this.email = email;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", FirstName=" + FirstName + ", LastName="
-				+ LastName + ", email=" + email + "]";
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", FirstName="
+				+ FirstName + ", LastName=" + LastName + ", email=" + email + "]";
+	}
+
+
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {
@@ -69,10 +84,14 @@ public abstract class User {
 		this.email = email;
 	}
 
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(FirstName, LastName, email, password, username);
+		return Objects.hash(FirstName, LastName, email, password, userId, username);
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -85,10 +104,7 @@ public abstract class User {
 		User other = (User) obj;
 		return Objects.equals(FirstName, other.FirstName) && Objects.equals(LastName, other.LastName)
 				&& Objects.equals(email, other.email) && Objects.equals(password, other.password)
-				&& Objects.equals(username, other.username);
+				&& Objects.equals(userId, other.userId) && Objects.equals(username, other.username);
 	}
-
-	
-	
 	
 }

@@ -27,7 +27,7 @@ public class UserController implements LoginInterface{
 		System.out.println("Attempting to log you in...");
 		User user = validate.validateLogin(username, password);
 		if (user != null) {
-			System.out.println("Login Successful! Welcome, " + username + ".");
+			System.out.println("Login Successful! Welcome, " + username + ".\n");
 		} else {
 			System.out.println("Failed Login!");
 		}
@@ -35,14 +35,15 @@ public class UserController implements LoginInterface{
 	}
 	
 	public void createUser() {
+		int userId = 0;
 		String newUsername = validate.validateUnique("username");
 		String newPassword = validate.getValidateNotNull("password");
 		String newFirstName = validate.getValidateNotNull("FirstName");
 		String newLastName= validate.getValidateNotNull("LastName");
 		String newEmail = validate.validateUnique("Email");
-		User newUser = new Customer(newUsername, newPassword, newFirstName, newLastName, newEmail);
-		userDao.createUser(newUser);
-		System.out.println("User successfully created! \nReturning you to main menu.");
+		User newUser = new Customer(userId, newUsername, newPassword, newFirstName, newLastName, newEmail);
+		newUser = userDao.createUser(newUser);
+		System.out.println("User successfully created! Returning you to main menu.");
 	}
 	
 

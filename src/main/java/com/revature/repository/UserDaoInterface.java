@@ -7,7 +7,7 @@ import com.revature.services.models.User;
 public interface UserDaoInterface {
 
 	//CREATE
-	void createUser(User newUser);
+	User createUser(User newUser);
 	
 	//READ
 	User getUser(String username, String password);
