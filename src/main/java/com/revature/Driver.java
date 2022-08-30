@@ -3,7 +3,7 @@ package com.revature;
 import java.util.Scanner;
 
 import com.revature.controller.AccountController;
-import com.revature.controller.Menu;
+import com.revature.controller.MainMenu;
 import com.revature.controller.UserController;
 import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoInterface;
@@ -22,7 +22,7 @@ public class Driver {
 		UserController userController = new UserController(sc, uDao);
 		AccountController accountController = new AccountController(sc, aDao);
 		
-		Menu menu = new Menu(userController, accountController);
+		MainMenu menu = new MainMenu(userController, accountController);
 		menu.mainMenu();
 	}
 

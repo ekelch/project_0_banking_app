@@ -16,7 +16,7 @@ public interface AccountDaoInterface {
 	BigDecimal getBalance(int accountId);
 	
 	//update account
-	Account updateAccount(int accountId);
+	Account updateAccount(Account account);
 	
 	//delete account
 	Account deleteAccount(int accountId);

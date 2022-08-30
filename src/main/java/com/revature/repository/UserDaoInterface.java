@@ -14,7 +14,8 @@ public interface UserDaoInterface {
 	User getUserById(int userId);
 	User getUserByUsername(String username);
 	
-	List<String> getUsersColumn(String input);
+	List<String> getUsersColumnString(String input);
+	List<Integer> getUsersColumnInt(String input);
 	
 	//UPDATE
 	User setPending(User user);

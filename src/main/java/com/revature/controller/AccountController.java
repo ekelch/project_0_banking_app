@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,6 +9,7 @@ import com.revature.repository.AccountDaoInterface;
 import com.revature.repository.UavDao;
 import com.revature.repository.UavDaoInterface;
 import com.revature.services.models.Account;
+import com.revature.services.models.Uav;
 import com.revature.services.models.User;
 
 public class AccountController {
@@ -50,23 +53,110 @@ public class AccountController {
 		Account account = aDao.getAccount(accountId);
 		System.out.println("Current balance in account \"" + account.getAccountId() + "\" is: $" + account.getBalance());
 		
-		while (!input.equals("back") && !input.equals("logout")) {
+		while (!input.equals("back") && !logout) {
 			System.out.println("Would you like to \"withdrawal\", \"deposit\", or \"transfer\" funds? You may also go \"back\" or \"logout\"");
 			input = sc.nextLine();
 			if (input.equals("deposit")) {
-				System.out.println("now depositing funds");
+				deposit(account);
 			}
-			if (input.equals("withdrawal")) {
-				System.out.println("now withdrawaling funds");
+			else if (input.equals("withdrawal")) {
+				withdrawal(account);
 			}
-			if (input.equals("transfer")) {
-				System.out.println("now transferring funds");
+			else if (input.equals("transfer")) {
+				List<Uav> uavMaster = uavDao.getUavMaster();
+				List<Integer> accountIdList = new ArrayList<Integer>();
+				for (int i = 0; i < uavMaster.size(); i++) {
+					accountIdList.add(uavMaster.get(i).getAccountId());
+				}
+				
+				System.out.print("Enter an accountId: ");
+				input = sc.nextLine();
+				while (!input.matches("\\d+")) {
+					if (!input.matches("\\d{1,}")) {
+						System.out.print("Please enter a valid accountId: ");
+						input = sc.nextLine();
+						continue;
+					}
+					while (!accountIdList.contains(Integer.parseInt(input))) {
+						System.out.print("Please try another accountId: ");
+						input = sc.nextLine();
+					}
+				}
+				System.out.println("Input Accepted.");
+				transfer(account, aDao.getAccount(Integer.parseInt(input)));
 			}
-			if (input.equals("logout")) {
+			else if (input.equals("logout")) {
 				logout = true;
 			}
 		}
 		return logout;
 	}
 	
-}
+	public boolean deposit(Account account) {
+		boolean logout = false;
+		System.out.print("Enter the amount you would like to deposit in format: DOLLAR:CENTS");
+		String input = "toaster";
+		while (!logout) {
+			if (input.equals("logout"))
+				logout = true;
+			while (!input.matches("\\d+[.]\\d{1,2}")) {
+				input = sc.nextLine();
+				if (input.matches("\\d+[.]\\d{1,2}")) {
+					BigDecimal addBalance = new BigDecimal(input);
+					account.setBalance(account.getBalance().add(addBalance));
+					System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
+					aDao.updateAccount(account);
+				} else {
+					System.out.print("Please enter a valid amount: ");
+				}
+			}
+		}
+		
+			
+		return logout;
+	}
+	
+	public boolean withdrawal(Account account) {
+		boolean logout = false;
+		System.out.print("Enter the amount you would like to withdrawal in format: DOLLAR:CENTS: ");
+		String input = "toaster";
+		while (!logout) {
+			if (input.equals("logout"))
+				logout = true;
+			while (!input.matches("\\d+[.]\\d{1,2}")) {
+				input = sc.nextLine();
+				if (input.matches("\\d+[.]\\d{1,2}")) {
+					BigDecimal subtractBalance = new BigDecimal(input);
+					account.setBalance(account.getBalance().subtract(subtractBalance));
+					System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
+					aDao.updateAccount(account);
+				} else {
+					System.out.print("Please enter a valid amount: ");
+				}
+			}
+		}
+		
+			
+		return logout;
+		}
+	
+	public boolean transfer(Account account1, Account account2) {
+		String input = "toaster";
+		System.out.print("Enter the amount you would like to transfer to account #" + account2.getAccountId() + " in format: DOLLAR:CENTS: ");
+		boolean logout = false;
+		while(!logout) {
+			if (input.matches("\\d+[.]\\d{1,2}")) {
+				BigDecimal difference = new BigDecimal(input);
+				account1.setBalance(account1.getBalance().subtract(difference));
+				account2.setBalance(account2.getBalance().add(difference));
+				aDao.updateAccount(account1);
+				aDao.updateAccount(account2);
+				System.out.println(("Transfer successful. Your new balance for account #" + account1.getAccountId() + " is: $" + account1.getBalance()));
+			} else {
+				System.out.print("Please enter a valid amount: ");
+			}
+		}	
+			return logout;
+		}
+	}
+

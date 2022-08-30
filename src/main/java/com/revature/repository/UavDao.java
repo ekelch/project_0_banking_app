@@ -38,14 +38,48 @@ public class UavDao implements UavDaoInterface{
 
 	@Override
 	public List<Uav> getUavByUserId(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+		Uav uav = null;
+		List<Uav> uavList = new ArrayList<Uav>();
+		final String sql = "SELECT * FROM user_account_balance WHERE user_id = '" + userId + "';";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			
+			while (set.next()) {
+				uav = new Uav(set.getInt("user_id"), set.getString("username"), set.getInt("account_id"), set.getBigDecimal("balance"));
+				uavList.add(uav);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	return uavList;
 	}
 
 	@Override
 	public List<Uav> getUavByAccountId(int accountId) {
-		// TODO Auto-generated method stub
-		return null;
+		Uav uav = null;
+		List<Uav> uavList = new ArrayList<Uav>();
+		final String sql = "SELECT * FROM user_account_balance WHERE account_id = '" + accountId + "';";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			
+			while (set.next()) {
+				uav = new Uav(set.getInt("user_id"), set.getString("username"), set.getInt("account_id"), set.getBigDecimal("balance"));
+				uavList.add(uav);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	return uavList;
 	}
 
 	@Override
@@ -66,6 +100,29 @@ public class UavDao implements UavDaoInterface{
 			e.getMessage();
 		}
 	return accountList;
+	}
+
+	@Override
+	public List<Uav> getUavMaster() {
+		Uav uav = null;
+		List<Uav> uavList = new ArrayList<Uav>();
+		final String sql = "SELECT * FROM user_account_balance;";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			
+			while (set.next()) {
+				uav = new Uav(set.getInt("user_id"), set.getString("username"), set.getInt("account_id"), set.getBigDecimal("balance"));
+				uavList.add(uav);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	return uavList;
 	}
 
 }

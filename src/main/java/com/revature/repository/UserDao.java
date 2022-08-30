@@ -140,7 +140,7 @@ public class UserDao implements UserDaoInterface{
 	}
 	
 	// Retrieve full array list of any column from users table
-	public List<String> getUsersColumn(String input) {
+	public List<String> getUsersColumnString(String input) {
 		List<String> inputList = new ArrayList<String>();
 		
 		final String sql = "SELECT " + input + " FROM users";
@@ -151,6 +151,28 @@ public class UserDao implements UserDaoInterface{
 			ResultSet set = statement.executeQuery(sql);
 			while (set.next()) {
 				inputList.add(set.getString(input));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			consoleLogger.error(e.getMessage());
+		}
+		
+		//consoleLogger.debug("Getting userList from users(username)");
+		return inputList;
+	}
+	
+	public List<Integer> getUsersColumnInt(String input) {
+		List<Integer> inputList = new ArrayList<Integer>();
+		
+		final String sql = "SELECT " + input + " FROM users";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			while (set.next()) {
+				inputList.add(set.getInt(input));
 			}
 			
 		} catch (SQLException e) {

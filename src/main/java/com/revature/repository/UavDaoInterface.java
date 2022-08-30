@@ -7,6 +7,7 @@ import com.revature.services.models.User;
 
 public interface UavDaoInterface {
 	
+	List<Uav> getUavMaster();
 	List<Uav> getUavByUsername(String username);
 	List<Uav> getUavByUserId(int userId);
 	List<Uav> getUavByAccountId(int accountId);

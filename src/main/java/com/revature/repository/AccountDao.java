@@ -93,9 +93,20 @@ public class AccountDao implements AccountDaoInterface{
 	
 
 	@Override
-	public Account updateAccount(int accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Account updateAccount(Account account) {
+		
+		final String sql = "update account_info set balance = " + account.getBalance() + " where account_id = " + account.getAccountId() + ";";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			statement.executeQuery(sql); // might need to get account to verify changes?
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	return account;
 	}
 
 	@Override
