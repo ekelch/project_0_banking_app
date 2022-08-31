@@ -77,21 +77,21 @@ public class AccountController {
 				for (int i = 0; i < uavMaster.size(); i++) {
 					accountIdList.add(uavMaster.get(i).getAccountId());
 				}
-				
-				System.out.print("Enter an accountId: ");
-				input = sc.nextLine();
+				System.out.println("all acounts: " + accountIdList);
+		
 				while (!input.matches("\\d+")) {
-					if (!input.matches("\\d{1,}")) {
-						System.out.print("Please enter a valid accountId: ");
-						input = sc.nextLine();
-						continue;
-					}
-					while (!accountIdList.contains(Integer.parseInt(input))) {
-						System.out.print("Please try another accountId: ");
-						input = sc.nextLine();
+					input = sc.nextLine();
+					if (input.matches("\\d+")) {
+						while (!accountIdList.contains(Integer.parseInt(input))) {
+							System.out.print("Account does not exist, please try again: ");
+							input = "notNumber";
+							break;
+						}
+					} else {
+						System.out.println("Please input a number: ");
 					}
 				}
-				System.out.println("Input Accepted.");
+				System.out.println("Account number accepted.");
 				transfer(account, aDao.getAccount(Integer.parseInt(input)));
 			}
 			if (input.equals("logout")) {

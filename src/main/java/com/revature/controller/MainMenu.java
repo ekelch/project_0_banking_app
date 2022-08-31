@@ -8,6 +8,8 @@ import com.revature.repository.AccountDao;
 import com.revature.repository.AccountDaoInterface;
 import com.revature.repository.UavDao;
 import com.revature.repository.UavDaoInterface;
+import com.revature.services.models.Account;
+import com.revature.services.models.Bridge;
 import com.revature.services.models.Uav;
 import com.revature.services.models.User;
 
@@ -30,17 +32,23 @@ public class MainMenu {
 	public void mainMenu() {
 		System.out.println("Hello, would you like to login in create a new account?");
 		Boolean logout = false;
+		
 		while (!logout) {
 			System.out.print("Please type \"login\" or \"create\": ");
 			input = sc.nextLine();
 			if (input.equals("login")) {
-				User user = userController.login();
-				if (user.getAccessType() == 1)
-					customerMenu(user);
-				if (user.getAccessType() == 2)
-					employeeMenu(user);
-				if (user.getAccessType() == 3)
-					adminMenu(user);
+				User user = null;
+				while(user == null)
+					user = userController.login();
+					if (user != null) {
+						if (user.getAccessType() == 1)
+							customerMenu(user);
+						if (user.getAccessType() == 2)
+							employeeMenu();
+						if (user.getAccessType() == 3)
+							adminMenu();
+				}
+				
 			}
 			if (input.equals("create")) {
 				userController.createUser();
@@ -67,7 +75,7 @@ public class MainMenu {
 		return logout;
 	}
 	
-	public boolean employeeMenu(User user) {
+	public boolean employeeMenu() {
 		Boolean logout = false;
 		List<Uav> uavMaster = uavDao.getUavMaster();
 		
@@ -165,12 +173,96 @@ public class MainMenu {
 		return logout;
 	}
 	
-	public boolean adminMenu(User user) {
+	public boolean adminMenu() {
 		Boolean logout = false;
+		List<Uav> uavMaster = uavDao.getUavMaster();
+		List<Integer> accountIdList = new ArrayList<Integer>();
 		
 		
-		return logout;
+		
+		while (!logout) {
+			System.out.print("Would you like to \"view\", \"edit\", or \"review\" new applicants? Or, you may \"logout\": ");
+			input = sc.nextLine();
+			if (input.equals("view")) {
+				logout = employeeMenu();
+			}
+			if (input.equals("edit")) {
+				for (int i = 0; i < uavMaster.size(); i++)
+					accountIdList.add(uavMaster.get(i).getAccountId());
+				System.out.println("Enter the account you would like to enter. Or, go \"back\" or \"logout\".");
+				
+				while (!input.equals("back") && !logout) {
+					input = sc.nextLine();
+					if (input.equals("logout")) {
+						logout = true;
+						break;
+					} 
+					if (input.equals("back"))
+						break;
+					
+					if (input.matches("\\d+")) {
+						if (accountIdList.contains(Integer.parseInt(input))) {
+							logout = accountController.enterAccount(Integer.parseInt(input));
+							break;
+						}
+					}
+				}
+			}
+			
+			if (input.equals("review")) {
+				List<User> userList = userController.userDao.getAllUsers();
+				List<Integer> userIdList = new ArrayList<Integer>();
+				int userIndex = 0;
+				User user = null;
+				System.out.println("Accounts with pending application status, userId's:");
+				for (int i = 0; i < userList.size(); i++) {
+					userIdList.add(userList.get(i).getUserId());
+					if (userList.get(i).getStatus().equals("pending"))
+						System.out.print(userIdList.get(i) + " ");
+				}
+				System.out.println("\nEnter the userId you would like to approve. Or, go \"back\" or \"logout\".");
+				while (!input.equals("back") && !logout) {
+					input = sc.nextLine();
+					if (input.equals("logout")) {
+						logout = true;
+						break;
+					} 
+					if (input.equals("back"))
+						break;
+					if (input.matches("\\d+")) {
+						
+						for (int i = 0; i<userList.size(); i++) {
+							if (Integer.parseInt(input) == userList.get(i).getUserId()) {
+								userIndex = i;
+								break;
+							}
+						}
+						if (userList.get(userIndex).getStatus().equals("pending")) {
+							user = userController.userDao.getUserById(Integer.parseInt(input));
+							Account newAccount = accountDao.createAccount(user);
+							Bridge newBridge = accountDao.createBridge(user, newAccount);
+							System.out.println("Account #" + newBridge.getAccountId() + " created for user " + newBridge.getUserId());
+							userController.userDao.setDefault(user);
+							break;
+						} else
+							System.out.println("Account number not pending. Try again: ");
+						
+					}
+				}
+			}
+
+			if (input.equals("logout")) {
+				logout = true;
+			}
+			if (input.equals("back")) {
+				break;
+		}
 	}
+	
+		return logout;
+		
+	}
+	
 	
 	
 }

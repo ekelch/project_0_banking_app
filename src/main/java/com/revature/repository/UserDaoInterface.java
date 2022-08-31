@@ -14,11 +14,13 @@ public interface UserDaoInterface {
 	User getUserById(int userId);
 	User getUserByUsername(String username);
 	
+	List<User> getAllUsers();
 	List<String> getUsersColumnString(String input);
 	List<Integer> getUsersColumnInt(String input);
 	
 	//UPDATE
 	User setPending(User user);
+	User setDefault(User user);
 	User setAccess(User user, int accessLevel);
 	
 	//DELETE 

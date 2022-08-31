@@ -201,6 +201,23 @@ public class UserDao implements UserDaoInterface{
 		user = getUser(user.getUsername(), user.getPassword());
 		return user;
 	}
+	
+	@Override
+	public User setDefault(User user) {
+		
+		final String sql = "update users set status = 'default' where user_id =" + user.getUserId() + ";";
+				
+				try (	Connection connection = ConnectionFactory.getConnection();
+						Statement statement = connection.createStatement();) 
+				{
+					statement.executeQuery(sql);
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.getMessage();
+				}
+			return user;
+		}
 
 	@Override
 	public User setAccess(User user, int accessLevel) {
@@ -218,6 +235,37 @@ public class UserDao implements UserDaoInterface{
 	@Override
 	public String toString() {
 		return "UserDao []";
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		
+		List<User> userList = new ArrayList<User>();
+		final String sql = "SELECT * FROM users";
+		
+		try (	Connection connection = ConnectionFactory.getConnection();
+				Statement statement = connection.createStatement();) 
+		{
+			ResultSet set = statement.executeQuery(sql);
+			while (set.next()) {
+				userList.add(new Customer(
+						set.getInt("user_id"),
+						set.getString("username"),
+						set.getString("password"),
+						set.getInt("access_type"),
+						set.getString("first_name"),
+						set.getString("last_name"),
+						set.getString("email"),
+						set.getString("status"))
+				);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+
+	return userList;
 	}
 
 	
