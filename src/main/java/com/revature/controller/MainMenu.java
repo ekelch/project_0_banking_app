@@ -29,7 +29,8 @@ public class MainMenu {
 
 	public void mainMenu() {
 		System.out.println("Hello, would you like to login in create a new account?");
-		while (!input.equals("logout")) {
+		Boolean logout = false;
+		while (!logout) {
 			System.out.print("Please type \"login\" or \"create\": ");
 			input = sc.nextLine();
 			if (input.equals("login")) {
@@ -165,10 +166,10 @@ public class MainMenu {
 	}
 	
 	public boolean adminMenu(User user) {
+		Boolean logout = false;
 		
 		
-		
-		return false;
+		return logout;
 	}
 	
 	
