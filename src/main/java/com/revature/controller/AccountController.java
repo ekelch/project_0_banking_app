@@ -125,7 +125,7 @@ public class AccountController {
 				account.setBalance(account.getBalance().add(addBalance));
 				System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
 				aDao.updateAccount(account);
-				fileLogger.debug("Deposit of amount " + account.getBalance() + " to account #" + account.getAccountId() + " successful.");
+				fileLogger.debug("Deposit of amount " + input + " to account #" + account.getAccountId() + " successful.");
 				break;
 			} else {
 				System.out.print("Please enter a valid amount: ");
@@ -154,7 +154,7 @@ public class AccountController {
 				account.setBalance(account.getBalance().subtract(subtractBalance));
 				System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
 				aDao.updateAccount(account);
-				fileLogger.debug("Withdraw of amount " + account.getBalance() + " from account #" + account.getAccountId() + " successful.");
+				fileLogger.debug("Withdraw of amount " + input + " from account #" + account.getAccountId() + " successful.");
 				break;
 			} else {
 				System.out.print("Please enter a valid amount: ");
