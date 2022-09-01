@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.revature.repository.AccountDaoInterface;
 import com.revature.repository.UavDao;
 import com.revature.repository.UavDaoInterface;
@@ -17,6 +20,7 @@ public class AccountController {
 	Scanner sc;
 	AccountDaoInterface aDao;
 	UavDaoInterface uavDao = new UavDao();
+	Logger fileLogger = LoggerFactory.getLogger("fileLogger");
 	
 	public AccountController(Scanner sc, AccountDaoInterface aDao) {
 		this.sc = sc;
@@ -77,8 +81,7 @@ public class AccountController {
 				for (int i = 0; i < uavMaster.size(); i++) {
 					accountIdList.add(uavMaster.get(i).getAccountId());
 				}
-				System.out.println("all acounts: " + accountIdList);
-		
+				System.out.print("Transfer to account #: ");
 				while (!input.matches("\\d+")) {
 					input = sc.nextLine();
 					if (input.matches("\\d+")) {
@@ -122,6 +125,7 @@ public class AccountController {
 				account.setBalance(account.getBalance().add(addBalance));
 				System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
 				aDao.updateAccount(account);
+				fileLogger.debug("Deposit of amount " + account.getBalance() + " to account #" + account.getAccountId() + " successful.");
 				break;
 			} else {
 				System.out.print("Please enter a valid amount: ");
@@ -150,6 +154,7 @@ public class AccountController {
 				account.setBalance(account.getBalance().subtract(subtractBalance));
 				System.out.println(("Your new balance for account #" + account.getAccountId() + " is: $" + account.getBalance()));
 				aDao.updateAccount(account);
+				fileLogger.debug("Withdraw of amount " + account.getBalance() + " from account #" + account.getAccountId() + " successful.");
 				break;
 			} else {
 				System.out.print("Please enter a valid amount: ");
@@ -178,6 +183,7 @@ public class AccountController {
 				aDao.updateAccount(account1);
 				aDao.updateAccount(account2);
 				System.out.println(("Transfer successful. Your new balance for account #" + account1.getAccountId() + " is: $" + account1.getBalance()));
+				fileLogger.debug("Transfer from account #" + account1.getAccountId() + " to account #" + account2.getAccountId() + ". New balance: $" + account1.getBalance());
 				break;
 			} else {
 				System.out.print("Please enter a valid amount: ");

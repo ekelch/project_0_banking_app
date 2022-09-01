@@ -21,6 +21,6 @@ public interface AccountDaoInterface {
 	Account updateAccount(Account account);
 	
 	//delete account
-	Account deleteAccount(int accountId);
+	void deleteAccount(int accountId);
 	
 }

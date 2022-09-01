@@ -80,7 +80,7 @@ public class MainMenu {
 		List<Uav> uavMaster = uavDao.getUavMaster();
 		
 		
-		while (!logout) {
+		while (!logout && !input.equals("back")) {
 			System.out.print("Search users by \"username\", \"userId\", \"accountId\". Or, you may \"logout\": ");
 			input = sc.nextLine();
 			
@@ -117,10 +117,16 @@ public class MainMenu {
 				
 				input = sc.nextLine();
 				while (!input.matches("\\d{1,}")) {
-					while (!userIdList.contains(Integer.parseInt(input))) {
+					if (input.matches("\\d{1,}")) {
+						while (!userIdList.contains(Integer.parseInt(input))) {
+							System.out.println("Please try another userId: ");
+							input = sc.nextLine();
+						}
+					} else {
 						System.out.println("Please try another userId: ");
 						input = sc.nextLine();
 					}
+					
 				}
 				int inputInt = Integer.parseInt(input);
 				List<Uav> uavList = uavDao.getUavByUserId(inputInt);
@@ -177,18 +183,18 @@ public class MainMenu {
 		Boolean logout = false;
 		List<Uav> uavMaster = uavDao.getUavMaster();
 		List<Integer> accountIdList = new ArrayList<Integer>();
-		
+		for (int i = 0; i < uavMaster.size(); i++)
+			accountIdList.add(uavMaster.get(i).getAccountId());
 		
 		
 		while (!logout) {
-			System.out.print("Would you like to \"view\", \"edit\", or \"review\" new applicants? Or, you may \"logout\": ");
+			System.out.print("Would you like to \"view\", \"edit\", \"review\", or \"delete\" an account? Or, you may \"logout\": ");
 			input = sc.nextLine();
 			if (input.equals("view")) {
 				logout = employeeMenu();
 			}
 			if (input.equals("edit")) {
-				for (int i = 0; i < uavMaster.size(); i++)
-					accountIdList.add(uavMaster.get(i).getAccountId());
+				
 				System.out.println("Enter the account you would like to enter. Or, go \"back\" or \"logout\".");
 				
 				while (!input.equals("back") && !logout) {
@@ -227,8 +233,11 @@ public class MainMenu {
 						logout = true;
 						break;
 					} 
-					if (input.equals("back"))
+					if (input.equals("back")) {
+						input = "notback";
 						break;
+					}
+						
 					if (input.matches("\\d+")) {
 						
 						for (int i = 0; i<userList.size(); i++) {
@@ -250,7 +259,27 @@ public class MainMenu {
 					}
 				}
 			}
-
+			
+			if (input.equals("delete")) {
+				while (!input.equals("back") && !logout) {
+					System.out.println("Enter account you would like to delete.");
+					input = sc.nextLine();
+					if (input.equals("logout")) {
+						logout = true;
+						break;
+					} 
+					
+					if (input.matches("\\d+")) {
+						if (accountIdList.contains(Integer.parseInt(input))) {
+							accountDao.deleteAccount(Integer.parseInt(input));
+							System.out.println("Account " + input + " has been deleted.");
+							break;
+						}
+					}
+				}
+				
+			}
+			
 			if (input.equals("logout")) {
 				logout = true;
 			}

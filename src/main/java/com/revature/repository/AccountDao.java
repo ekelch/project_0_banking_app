@@ -157,9 +157,21 @@ public class AccountDao implements AccountDaoInterface{
 	}
 
 	@Override
-	public Account deleteAccount(int accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteAccount(int accountId) {
+		
+	final String sql1 = "delete from user_account_bridge where " + accountId + "= 25;";
+	final String sql2 = "delete from account_info where " + accountId + "= 25;";
+			
+			try (	Connection connection = ConnectionFactory.getConnection();
+					Statement statement = connection.createStatement();) 
+			{
+				statement.executeQuery(sql1);
+				statement.executeQuery(sql2);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.getMessage();
+			}
 	}
 
 	
